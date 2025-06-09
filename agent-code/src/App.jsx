@@ -8,10 +8,7 @@ const App = () => {
   const [code, setCode] = useState('# Write your Python code here');
   const [output, setOutput] = useState('');
 
-  // Remove useEffect that loads Pyodide on mount
-
   const handleRun = async () => {
-    // Ensure Pyodide is loaded before running code
     await loadPyodideInstance(); 
     const result = await runPythonCode(code);
     setOutput(result); 
