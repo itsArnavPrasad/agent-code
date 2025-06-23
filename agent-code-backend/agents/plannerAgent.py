@@ -1,3 +1,4 @@
+# plannerAgent.py
 from dotenv import load_dotenv
 import os
 import google.generativeai as genai
@@ -10,8 +11,8 @@ genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 def plannerNode(state):
-    print("Planner Node Loading")
-    task = state.get("task", "")
+    print("\n Planner agent running...")
+    task = state["planner_state"]["task"]
     if not task:
         raise ValueError("Task is required in the state.")
     
@@ -29,7 +30,7 @@ def plannerNode(state):
     text = response.text.strip()
     steps = [line.strip("- ").strip() for line in text.split("\n") if "Step" in line]
     
-    state["steps"] = steps
-    print("State after Planning:")
-    print(state)
+    state["planner_state"]["steps"] = steps
+    print("Planner State after Planning:")
+    print(state["planner_state"])
     return state

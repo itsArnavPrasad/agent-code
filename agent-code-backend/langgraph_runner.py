@@ -1,16 +1,23 @@
+# langgraph_runner.py
 from langgraph.graph import StateGraph
 from agents.developerAgent import developerNode
 from agents.plannerAgent import plannerNode
+from typing import TypedDict, List, Dict, Any
 
-# this is the state class that will be used in the graph
-class AppState(dict):
+# Defining states for agents
+class PlannerState(TypedDict):
     task: str
-    steps: list = []
-    code: list = []
-    pass
+    steps: List[str]
+
+class DeveloperState(TypedDict):
+    code: List[str]
+
+class OverallState(TypedDict):
+    planner_state: PlannerState
+    developer_state: DeveloperState
 
 # Building the graph
-workflow = StateGraph(AppState)
+workflow = StateGraph(OverallState)
 
 workflow.add_node("planner", plannerNode)
 workflow.add_node("developer", developerNode)
@@ -22,6 +29,9 @@ graph = workflow.compile()
 
 # Runing a test
 if __name__ == "__main__":
-    initial_state = {"task": "Write a sort function"}
+    initial_state = {
+        "planner_state": {"task": "make a bubble sort function to sort a array", "steps": []},
+        "developer_state": {"code": []}
+    }
     final_state = graph.invoke(initial_state)
     print("Final state:", final_state)
