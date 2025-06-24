@@ -1,20 +1,19 @@
 // ChatInterface.jsx
 import React, { useState } from 'react';
 
-const ChatInterface = ({ onSend }) => {
+const ChatInterface = ({ onSend, messages, setMessages }) => {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
-    const newMessage = { role: "user", content: input };
-    const updatedMessages = [...messages, newMessage];
-    setMessages(updatedMessages);
+    const handleSend = () => {
+      if (!input.trim()) return;
 
-    // Trigger parent handler (send to backend)
-    onSend(input, updatedMessages);
-    setInput("");
-  };
+      const newMessage = { role: "user", content: input };
+      const updatedMessages = [...messages, newMessage];
+      setMessages(updatedMessages);
+
+      onSend(input, updatedMessages);
+      setInput("");
+    };
 
   return (
     <div style={{ backgroundColor: "#1e1e1e", padding: "1rem", borderRadius: "8px", marginTop: "1rem", color: "white" }}>
@@ -39,5 +38,5 @@ const ChatInterface = ({ onSend }) => {
     </div>
   );
 };
-
 export default ChatInterface;
+
