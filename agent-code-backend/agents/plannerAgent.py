@@ -18,6 +18,9 @@ def plannerNode(state):
     
     prompt = f"""You are a planning assistant. Break down the following software task into 2-3 clear, actionable development steps, which can be clearly understandable by a developer agent.:
     
+    Current Code:
+    {state["developer_state"].get("code", "")}
+    
     Task: "{task}"
 
     Format:

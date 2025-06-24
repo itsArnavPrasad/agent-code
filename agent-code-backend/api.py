@@ -1,4 +1,4 @@
-# main.py
+# api.py
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -37,7 +37,7 @@ async def run_developer_agent(req: AgentRequest):
             "steps": []
         },
         "developer_state": {
-            "code": [req.current_code],
+            "code": req.current_code,
             "logs": []
         }
     }

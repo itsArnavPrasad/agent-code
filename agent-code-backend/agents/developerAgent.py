@@ -14,6 +14,10 @@ def developerNode(state):
 
     steps = state["planner_state"].get("steps", [])
     current_code = state["developer_state"].get("code", "")
+    
+    # Ensure current_code is a string
+    if isinstance(current_code, list):
+        current_code = "\n".join(current_code)
 
     if not steps or not current_code:
         raise ValueError("Developer node requires both code and planner steps.")
@@ -29,7 +33,7 @@ Your job is to modify the following Python code based on the development instruc
 ### Instructions:
 {"; ".join(steps)}
 
-Please return ONLY the final, modified Python code, without extra explanation or formatting.
+Please return ONLY the final, modified Python code, without extra explanation or formatting. Do Not include unit tests.
 """
 
     print("Sending prompt to Gemini...")
@@ -41,6 +45,7 @@ Please return ONLY the final, modified Python code, without extra explanation or
         edited_code = edited_code[:-3].strip()
 
     # Update developer state
+    print("Type of current_code:", type(current_code), "Type of edited_code:", type(edited_code))
     state["developer_state"]["code"] = edited_code
     state["developer_state"]["logs"] = steps
 
