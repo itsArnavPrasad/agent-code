@@ -1,10 +1,11 @@
+// ToolBar.jsx
 import React from 'react';
 
-const Toolbar = ({ onRun }) => {
+const Toolbar = ({ onRun, onRevert }) => {
   return (
     <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
       <button onClick={onRun}>Run</button>
-      <button disabled>Agent (Coming soon)</button>
+      <button onClick={onRevert}>Revert</button>
     </div>
   );
 };

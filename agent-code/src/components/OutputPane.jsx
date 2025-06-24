@@ -1,3 +1,4 @@
+// OutputPane.jsx
 import React from 'react';
 
 const OutputPane = ({ output }) => {

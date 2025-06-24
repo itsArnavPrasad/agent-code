@@ -3,16 +3,48 @@ from dotenv import load_dotenv
 import os
 import google.generativeai as genai
 
+# Load model
+load_dotenv()
+api_key = os.getenv("GOOGLE_API_KEY")
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel("gemini-1.5-flash")
+
 def developerNode(state):
-    print("\n Developer agent running...")
-    steps = state["planner_state"]["steps"]
-    mock_code_edits = []
+    print("\nDeveloper agent running...")
 
-    for step in steps:
-        mock_code_edits.append(f"# [AUTOEDIT] Implementing: {step}\n")
+    steps = state["planner_state"].get("steps", [])
+    current_code = state["developer_state"].get("code", "")
 
-    # Combine them into a string and store in code
-    state["developer_state"]["code"] = mock_code_edits
-    print("State after Developer Agent:")
-    print(state["developer_state"])
+    if not steps or not current_code:
+        raise ValueError("Developer node requires both code and planner steps.")
+
+    # Create prompt for Gemini
+    prompt = f"""You are an AI code editor.
+
+Your job is to modify the following Python code based on the development instructions provided.
+
+### Original Code:
+{current_code}
+
+### Instructions:
+{"; ".join(steps)}
+
+Please return ONLY the final, modified Python code, without extra explanation or formatting.
+"""
+
+    print("Sending prompt to Gemini...")
+    response = model.generate_content(prompt)
+    edited_code = response.text.strip()
+    if edited_code.startswith("```python"):
+        edited_code = edited_code[len("```python"):].strip()
+    if edited_code.endswith("```"):
+        edited_code = edited_code[:-3].strip()
+
+    # Update developer state
+    state["developer_state"]["code"] = edited_code
+    state["developer_state"]["logs"] = steps
+
+    print("Developer Agent - Edited Code:")
+    print(edited_code)
+
     return state
