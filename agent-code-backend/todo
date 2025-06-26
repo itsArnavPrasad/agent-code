@@ -1,0 +1,169 @@
+### WEEK 4 MASTER TODO LIST
+
+File management: internal search, AST
+
+```
+/backend
+├── agents/
+│   ├── planner_agent.py          # Loop logic for planning
+│   ├── developer_agent.py        # Loop logic for development
+│   └── tools/
+│       ├── search.py             # search_internal + search_external
+│       ├── scraper.py            # extract full website content
+│       ├── write_utils.py        # diff, append, in-place write ops
+│       └── __init__.py
+│
+├── langgraph_runner.py           # Builds LangGraph with loops
+├── state_definitions.py          # TypedDicts + make_initial_state
+├── prompt_templates.py           # Planner/Developer prompts
+├── api.py                        # FastAPI routes
+├── requirements.txt
+├── .env      
+```
+
+---
+
+##  PHASE 1: Planner Loop Refactor
+
+ Refactor `planner_agent.py` to:
+
+1. [ ] **Initialize step-by-step planning**: Add state key `current_step_idx` and `complete = False` in `state["planner_state"]`.
+2. [ ] **Call `search_internal()` + `search_external()`** from `tools/search.py` before generating step.
+3. [ ] **Use Chain-of-Thought prompting** (via `prompt_templates.py`) to reason through next step (use `get_planner_prompt`).
+4. [ ] **Append step to `steps`** list.
+5. [ ] **Update `current_step_idx`**, set `complete=True` when planning is done (model returns “DONE”).
+
+ **Test cases:**
+
+* [ ] Given a task, do steps accumulate one at a time?
+* [ ] Does planning stop correctly?
+* [ ] Can you inspect intermediate planner state?
+
+---
+
+##  PHASE 2: Developer Loop Refactor
+
+ Refactor `developer_agent.py` to:
+
+1. [ ] **Pick current step** from `planner_state["steps"][current_step_idx]`.
+2. [ ] **Search context** with `search_internal()` and `search_external()` using that step.
+3. [ ] **Pass context and step into dev prompt** (via `get_developer_prompt` in `prompt_templates.py`).
+4. [ ] **Use `write_utils.apply_diff()`** to modify code based on output (avoid full overwrite).
+5. [ ] **Log step, reasoning, and tool used** in `developer_state`.
+
+ **Test cases:**
+
+* [ ] Does code change reflect only one step at a time?
+* [ ] Can you undo/inspect each diff in sequence?
+* [ ] Do logs include tool used + reasoning?
+
+---
+
+##  PHASE 3: Tools
+
+### `tools/search.py`
+
+* [ ] Implement:
+
+  * [ ] `search_internal(code: str, query: str) -> str`
+  * [ ] `search_external(query: str) -> str`
+
+### `tools/scraper.py`
+
+* [ ] Implement `scrape_url(url: str) -> str`
+
+ **Test:**
+
+* [ ] Can you call internal search with a step like “Add a new function”?
+* [ ] Does external search return results?
+* [ ] Does scraper extract useful text from a real link?
+
+---
+
+##  PHASE 4: Code Editing Logic
+
+### `tools/write_utils.py`
+
+* [ ] Implement:
+
+  * [ ] `apply_diff(code: str, edit: str) -> str`
+  * [ ] `append_block(code: str, block: str) -> str`
+
+ **Test:**
+
+* [ ] Does code get updated in-place?
+* [ ] If developer agent returns whole code block, is only diff applied?
+
+---
+
+##  PHASE 5: State + LangGraph Update
+
+### `state_definitions.py`
+
+* [] Include `current_step_idx`, `current_step`, `logs`, etc.
+* [ ] Ensure `make_initial_state()` returns them properly.
+
+### `langgraph_runner.py`
+
+* [ ] Update with **Planner Loop**:
+
+  * [ ] `planner -> planner` edge while not `complete`
+* [ ] Update with **Developer Loop**:
+
+  * [ ] `developer -> developer` edge while steps left
+* [ ] Final node: `done`
+
+ **Test:**
+
+* [ ] Does planner loop multiple times and exit?
+* [ ] Does developer pick steps one-by-one?
+
+---
+
+##  PHASE 6: Prompts
+
+### `prompt_templates.py`
+
+* [ ] `get_planner_prompt(task, code, prev_steps)`
+* [ ] `get_developer_prompt(code, step, internal_ctx, external_ctx)`
+* [ ] Add Chain-of-Thought scaffolding to both.
+
+ **Test:**
+
+* [ ] Prompts output clean next step and clean code.
+* [ ] No extra markdown, explanation, or comments in output.
+
+---
+
+##  PHASE 7: API Testing
+
+### `api.py`
+
+* [ ] Expose `/run-agent` endpoint
+* [ ] Accept `task` and `initial_code`
+* [ ] Initialize state via `make_initial_state`
+* [ ] Pass state into `get_graph().invoke(...)`
+
+ **Test:**
+
+* [ ] POST request starts both loops and returns final code + logs.
+
+---
+
+###  Final Test Flow
+
+1. Give a task like “Add factorial function and test it.”
+2. Agent should:
+
+   * Plan one step: “Write factorial function”
+   * Plan next step: “Write main() to test factorial”
+   * Finish planning
+3. Developer should:
+
+   * Apply function step
+   * Apply test step
+4. Final result should have clean code, clean logs.
+
+---
+
+Would you like a `test_script.py` template to hit the API and validate all this once you’re done?
