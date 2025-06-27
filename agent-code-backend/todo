@@ -63,20 +63,20 @@ File management: internal search, AST
 
 ### `tools/search.py`
 
-* [ ] Implement:
+* [x] Implement:
 
-  * [ ] `search_internal(code: str, query: str) -> str`
-  * [ ] `search_external(query: str) -> str`
+  * [x] `search_internal(code: str, query: str) -> str`
+  * x ] `search_external(query: str) -> str`
 
 ### `tools/scraper.py`
 
-* [ ] Implement `scrape_url(url: str) -> str`
+* [x] Implement `scrape_url(url: str) -> str`
 
  **Test:**
 
-* [ ] Can you call internal search with a step like “Add a new function”?
-* [ ] Does external search return results?
-* [ ] Does scraper extract useful text from a real link?
+* [x] Can you call internal search with a step like “Add a new function”?
+* [x] Does external search return results?
+* [x] Does scraper extract useful text from a real link?
 
 ---
 
@@ -84,15 +84,15 @@ File management: internal search, AST
 
 ### `tools/write_utils.py`
 
-* [ ] Implement:
+* [x] Implement:
 
-  * [ ] `apply_diff(code: str, edit: str) -> str`
-  * [ ] `append_block(code: str, block: str) -> str`
+  * [x] `apply_diff(code: str, edit: str) -> str`
+  * [x] `append_block(code: str, block: str) -> str`
 
  **Test:**
 
-* [ ] Does code get updated in-place?
-* [ ] If developer agent returns whole code block, is only diff applied?
+* [x] Does code get updated in-place?
+* [x] If developer agent returns whole code block, is only diff applied?
 
 ---
 

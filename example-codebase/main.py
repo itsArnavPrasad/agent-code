@@ -1,4 +1,5 @@
-def add(a, b):
+import time
+def sum(a, b):
     return a + b
 
 num = 3
@@ -17,10 +18,6 @@ def divide(a, b):
 class HelloWorld:
     def hi():
         print('hi')
-
-def calculate_sum(a: int, b: int) -> int:
-    """Calculate the sum of two numbers."""
-    return a + b
 
 def calculate_sum(a: int, b: int) -> int:
     """Calculate the sum of two numbers."""
