@@ -1,3 +1,4 @@
+# search_internal.py
 import os
 import re
 from pathlib import Path
@@ -530,25 +531,4 @@ if __name__ == "__main__":
     # print(get_file_content("../example-codebase/main.py", start_line=1, end_line=20)) # this will get only 1-20 lines
     # print(get_file_content("../example-codebase/main.py"))
 
-
-
-
-
-def search_external(query: str) -> str:
-    """
-    Perform a simple web search using DuckDuckGo Instant Answer API or fallback to scraping.
-    Returns a string summary or top search links.
-    """
-    try:
-        url = f'https://api.duckduckgo.com/?q={query}&format=json&no_html=1'
-        res = requests.get(url)
-        data = res.json()
-        if data.get('AbstractText'):
-            return f"🔍 DuckDuckGo Summary:\n{data['AbstractText']}"
-        elif data.get('RelatedTopics'):
-            links = [item['FirstURL'] for item in data['RelatedTopics'] if 'FirstURL' in item][:3]
-            return '🔗 Top Results:\n' + '\n'.join(links)
-    except Exception as e:
-        return f'Search failed: {str(e)}'
-    return 'No useful results found.'
 

@@ -1,3 +1,4 @@
+# state_definitions.py
 from typing import TypedDict, List, Dict, Any, Optional
 from enum import Enum
 
@@ -29,7 +30,7 @@ class PlannerState(TypedDict):
     current_step_index: int
     steps: List[PlanStep]
     status: AgentStatus
-    
+
 
 class DeveloperState(TypedDict):
     code: str  # latest code after agent changes
@@ -37,7 +38,7 @@ class DeveloperState(TypedDict):
     current_step_index: int # step from PlannerState
     status: AgentStatus
     files_modified: List[str]
-    
+
 
 class OverallState(TypedDict):
     planner_state: PlannerState
