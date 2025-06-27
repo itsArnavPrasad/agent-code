@@ -1,6 +1,7 @@
 # AgentCode
 
 AgentCode is a simple AI-driven code planning and development system.
+
 This project is under active development. Feedback and ideas welcome!
 
 It has two main agents:
