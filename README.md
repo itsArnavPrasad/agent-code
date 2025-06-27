@@ -26,5 +26,5 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Run the API server
-PYTHONPATH=. uvicorn api:app --reload
+uvicorn api:app --reload
 ```
