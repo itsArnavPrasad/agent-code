@@ -531,4 +531,5 @@ if __name__ == "__main__":
     # print(get_file_content("../example-codebase/main.py", start_line=1, end_line=20)) # this will get only 1-20 lines
     # print(get_file_content("../example-codebase/main.py"))
 
-
+    # print("\n=== Analyze File Structure ===")
+    # print(analyze_file_structure("../example-codebase/main.py"))
