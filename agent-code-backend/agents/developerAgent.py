@@ -1,4 +1,4 @@
-# developerAgent.py
+# agents/developerAgent.py
 from dotenv import load_dotenv
 import os
 import google.generativeai as genai

@@ -66,7 +66,7 @@ File management: internal search, AST
 * [x] Implement:
 
   * [x] `search_internal(code: str, query: str) -> str`
-  * x ] `search_external(query: str) -> str`
+  * [x] `search_external(query: str) -> str`
 
 ### `tools/scraper.py`
 
@@ -100,17 +100,17 @@ File management: internal search, AST
 
 ### `state_definitions.py`
 
-* [] Include `current_step_idx`, `current_step`, `logs`, etc.
+* [x] Include `current_step_idx`, `current_step`, `logs`, etc.
 * [ ] Ensure `make_initial_state()` returns them properly.
 
 ### `langgraph_runner.py`
 
 * [ ] Update with **Planner Loop**:
 
-  * [ ] `planner -> planner` edge while not `complete`
+* [ ] `planner -> planner` edge while not `complete`
 * [ ] Update with **Developer Loop**:
 
-  * [ ] `developer -> developer` edge while steps left
+* [ ] `developer -> developer` edge while steps left
 * [ ] Final node: `done`
 
  **Test:**

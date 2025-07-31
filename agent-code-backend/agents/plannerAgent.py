@@ -1,4 +1,4 @@
-# plannerAgent.py
+# agents/plannerAgent.py
 from dotenv import load_dotenv
 import os
 import google.generativeai as genai
@@ -16,7 +16,8 @@ def plannerNode(state):
     if not task:
         raise ValueError("Task is required in the state.")
     
-    prompt = f"""You are a planning assistant. Break down the following software task into 2-3 clear, actionable development steps, which can be clearly understandable by a developer agent.:
+    prompt = f"""You are a planning assistant.
+    Break down the following software task into 2-3 clear, actionable development steps, which can be clearly understandable by a developer agent.:
     
     Current Code:
     {state["developer_state"].get("code", "")}
