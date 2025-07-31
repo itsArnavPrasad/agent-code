@@ -15,7 +15,7 @@ const OutputPane = ({ output }) => {
         borderRadius: '8px'
       }}
     >
-      <pre>{output}</pre> {/* ✅ Make sure this is using the prop */}
+      <pre>{output}</pre> 
     </div>
   );
 };
