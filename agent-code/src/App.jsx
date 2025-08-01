@@ -49,13 +49,13 @@ const App = () => {
 
       const data = await res.json();
       if (res.ok) {
-        setOutput(`✅ ${data.message}`);
+        setOutput(`${data.message}`);
       } else {
-        setOutput(`❌ Error: ${data.detail}`);
+        setOutput(`Error: ${data.detail}`);
       }
     } catch (err) {
       console.error('Save failed:', err);
-      setOutput(`❌ Save failed: ${err.message}`);
+      setOutput(`Save failed: ${err.message}`);
     }
   };
 
@@ -97,8 +97,8 @@ const App = () => {
   };
 
   return (
-    <div style={{ padding: '1rem', maxWidth: '1200px', margin: '0 auto' }}>
-      <h1>Agentic IDE</h1>
+    <div style={{ padding: '5rem 8rem', margin: '0 auto', background: 'black'}}>
+      <h1 style={{ color: 'white'}}>AgentCode</h1>
       
       <FolderStructure 
         onFileSelect={handleFileSelect}
